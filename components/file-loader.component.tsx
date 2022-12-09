@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import { useEffect, useState } from "react";
 import styles from "../styles/file-loader.module.css";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import LearnComponent from "./learn-component";
 
 export default function FileLoader() {
   const [parsedData, setParsedData] = useState(null);
@@ -67,7 +68,7 @@ export default function FileLoader() {
   };
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <input
         accept=".csv"
         className={styles.fileLoaderInput}
@@ -91,6 +92,7 @@ export default function FileLoader() {
           ></DataGrid>
         ) : null}
       </div>
+      {parsedData ? <LearnComponent data={parsedData} /> : null}
     </div>
   );
 }

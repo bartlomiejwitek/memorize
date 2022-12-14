@@ -5,7 +5,11 @@ import styles from "../styles/file-loader.module.css";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import LearnComponent from "./learn-component";
 
-export default function FileLoader() {
+export default function FileLoader({
+  onDataLoaded,
+}: {
+  onDataLoaded: Function;
+}) {
   const [parsedData, setParsedData] = useState(null);
   const [file, setFile] = useState({});
   const FILE_EXTENSION = "csv";
@@ -17,6 +21,10 @@ export default function FileLoader() {
 
   useEffect(() => {
     console.log(parsedData);
+    if (parsedData !== null && parsedData !== undefined) {
+      onDataLoaded(parsedData);
+      localStorage.setItem("test_set_data", JSON.stringify(parsedData));
+    }
   }, [parsedData]);
 
   const handleFileSelected = (e) => {
@@ -92,7 +100,6 @@ export default function FileLoader() {
           ></DataGrid>
         ) : null}
       </div>
-      {parsedData ? <LearnComponent data={parsedData} /> : null}
     </div>
   );
 }

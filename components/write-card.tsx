@@ -14,25 +14,41 @@ export default function WriteCard({
   callback: any;
 }) {
   const [userAnswer, setUserAnswer] = useState("");
+  const [result, setResult] = useState<boolean | null>(null);
 
   const handleCheckButtonClick = () => {
     //VERY simple logic here, rework;
     console.log(userAnswer);
     if (answer.toLowerCase().trim() === userAnswer.toLowerCase().trim()) {
+      setResult(true);
       console.log("ok");
     } else {
+      setResult(false);
       console.log("nok");
     }
+  };
+
+  const handleNextButtonClick = () => {
+    setUserAnswer("");
+    setResult(null);
+    callback();
   };
 
   return (
     <div className={styles.wrapper}>
       <Paper variant="outlined" className={styles.inner}>
-        {question}
+        {result === true ? (
+          <span style={{ color: "green" }}>Correct!</span>
+        ) : null}
+        {result === false ? (
+          <span style={{ color: "red" }}>Wrong! Correct answer: {answer}</span>
+        ) : null}
+        <div className={styles.question}>{question}</div>
         <TextField
           id="outlined-basic"
           label="Answer"
           variant="outlined"
+          value={userAnswer}
           onChange={(e) => {
             setUserAnswer(e.target.value);
           }}
@@ -40,6 +56,11 @@ export default function WriteCard({
         <Button variant="contained" onClick={handleCheckButtonClick}>
           Check
         </Button>
+        {result !== null ? (
+          <Button variant="container" onClick={handleNextButtonClick}>
+            Next
+          </Button>
+        ) : null}
       </Paper>
     </div>
   );

@@ -1,17 +1,19 @@
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "../styles/write-card.module.css";
 
 export default function WriteCard({
   question,
   answer,
-  callback,
+  nextCallback,
+  checkCallback,
 }: {
   question: string;
   answer: string;
-  callback: any;
+  nextCallback: any;
+  checkCallback: any;
 }) {
   const [userAnswer, setUserAnswer] = useState("");
   const [result, setResult] = useState<boolean | null>(null);
@@ -28,10 +30,31 @@ export default function WriteCard({
     }
   };
 
+  useEffect(() => {
+    // console.log(data);
+    // setCurrentCard({ question: data[0].col1, answer: data[0].col2 });
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [userAnswer, result]);
+
   const handleNextButtonClick = () => {
     setUserAnswer("");
+    nextCallback();
     setResult(null);
-    callback();
+  };
+
+  const onKeyDown = (event: any) => {
+    console.log(event.code);
+    console.log(result);
+    if (event.code === "Enter") {
+      if (result === true) {
+        handleNextButtonClick();
+      } else {
+        handleCheckButtonClick();
+      }
+    }
   };
 
   return (
@@ -48,16 +71,20 @@ export default function WriteCard({
           id="outlined-basic"
           label="Answer"
           variant="outlined"
+          autoComplete="off"
           value={userAnswer}
           onChange={(e) => {
+            console.log(e.target.value);
             setUserAnswer(e.target.value);
           }}
         />
-        <Button variant="contained" onClick={handleCheckButtonClick}>
-          Check
-        </Button>
-        {result !== null ? (
-          <Button variant="container" onClick={handleNextButtonClick}>
+        {result !== true ? (
+          <Button variant="contained" onClick={handleCheckButtonClick}>
+            Check
+          </Button>
+        ) : null}
+        {result !== false && result !== null ? (
+          <Button variant="contained" onClick={handleNextButtonClick}>
             Next
           </Button>
         ) : null}

@@ -1,48 +1,70 @@
 import Button from "@material-ui/core/Button";
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
+import SummaryComponent from "./summary-component";
 import WriteCard from "./write-card";
 
 export default function LearnComponent({ data }) {
   // const [currentCard, setCurrentCard] = useState({ question: "", answer: "" });
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [finished, setFinished] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [currentResult, setCurrentResult] = useState(false);
 
-  const handleAnswer = () => {
-    console.log("answered");
+  const handleNextButtonClick = () => {
+    // console.log("handle answer");
     setCurrentIndex((prev) => {
       if (prev + 1 < data.length) {
-        return ++prev;
+        console.log("prev: " + prev + " . data.lenght: " + data.length);
+        return prev + 1;
+      } else {
+        setFinished(true);
+        return prev;
       }
     });
   };
 
+  const handleCheckButtonClick = () => {
+    // console.log(result);
+  };
+
+  const handleAnswer = (answer) => {
+    // console.log(answer);
+    // if (answer === true) {
+    //   setCorrectCount((prev) => prev + 1);
+    // } else if (answer === false) {
+    //   setIncorrectCount((prev) => prev + 1);
+    // }
+  };
+
   useEffect(() => {
-    console.log(data);
-    // setCurrentCard({ question: data[0].col1, answer: data[0].col2 });
-  }, []);
+    // console.log("current index:" + currentIndex);
+  }, [currentIndex]);
 
   return (
     <div>
-      <WriteCard
-        question={data[currentIndex].col1}
-        answer={data[currentIndex].col2}
-        callback={handleAnswer}
-      />
-      <div>
-        Question: {currentIndex + 1}/{data.length}
-      </div>
-      {currentIndex === data.length - 1 ? (
+      {finished ? (
+        <SummaryComponent
+          resetCallback={() => {
+            setCurrentIndex(0);
+            setFinished(false);
+            // setCorrectCount(0);
+            // setIncorrectCount(0);
+          }}
+        />
+      ) : (
         <div>
-          Finished!{" "}
-          <Button
-            variant="contained"
-            onClick={() => {
-              setCurrentIndex(0);
-            }}
-          >
-            Reset
-          </Button>
+          {" "}
+          <WriteCard
+            question={data[currentIndex].col1}
+            answer={data[currentIndex].col2}
+            nextCallback={handleNextButtonClick}
+            checkCallback={handleCheckButtonClick}
+          />
+          <div>
+            Question: {currentIndex + 1}/{data.length}
+          </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

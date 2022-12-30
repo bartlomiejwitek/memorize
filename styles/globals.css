@@ -1,3 +1,27 @@
+.button-primary {
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 1.2rem;
+  padding: 5px 10px 5px 10px;
+}
+
+.button-primary:hover {
+  box-shadow: 2px 1px 2px;
+}
+
+.button-primary > a {
+  color: white !important;
+  border-bottom: none;
+}
+
+.button-primary > a:hover {
+  color: white !important;
+  text-decoration: none;
+}
+
 html,
 body {
   padding: 0;

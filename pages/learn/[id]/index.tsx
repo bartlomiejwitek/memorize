@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import LearnComponent from "../components/learn-component";
+import LearnComponent from "../../../components/learn-component";
 
 export default function Learn() {
   const [data, setData] = useState(null);

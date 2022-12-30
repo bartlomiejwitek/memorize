@@ -4,6 +4,7 @@ import { AppBar, Box, Container, Toolbar } from "@material-ui/core";
 import Typography from "@mui/material/Typography";
 import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -38,20 +39,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 MEMORIZE APP
               </Typography>
               <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                <Button
-                  variant="contained"
-                  sx={{
-                    my: 2,
-                    overrides: { color: "white" },
-                    display: "block",
-                  }}
-                ></Button>
+                <button className="button-primary">
+                  <Link href="/create">Create Set</Link>
+                </button>
+                <button className="button-primary">
+                  <Link href="/sets">My Sets</Link>
+                </button>
+                <button className="button-primary">
+                  <Link href="/stats">Stats</Link>
+                </button>
               </Box>
             </Toolbar>
           </Container>
         </AppBar>
       </header>
-      {children}
+      <div style={{ marginTop: "5rem" }}>{children}</div>
     </div>
   );
 }
